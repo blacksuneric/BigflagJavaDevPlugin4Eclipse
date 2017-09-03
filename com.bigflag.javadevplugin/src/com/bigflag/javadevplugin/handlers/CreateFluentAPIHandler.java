@@ -19,17 +19,19 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.HandlerUtil;
 import org.eclipse.ui.texteditor.ITextEditor;
 
+import com.bigflag.javadevplugin.tools.DevTools;
+
 /**
  * Our sample handler extends AbstractHandler, an IHandler base class.
  * 
  * @see org.eclipse.core.commands.IHandler
  * @see org.eclipse.core.commands.AbstractHandler
  */
-public class HelloHandler extends AbstractHandler {
+public class CreateFluentAPIHandler extends AbstractHandler {
 	/**
 	 * The constructor.
 	 */
-	public HelloHandler() {
+	public CreateFluentAPIHandler() {
 	}
 
 	/**
@@ -47,12 +49,16 @@ public class HelloHandler extends AbstractHandler {
 			byte[] bs = new byte[1024];
 			// ArrayList<Byte> byteArray=new ArrayList<Byte>();
 			br.read(bs);
-			MessageDialog.openInformation(window.getShell(), "This is a test", new String(bs, "utf8"));
+//			MessageDialog.openInformation(window.getShell(), "This is a test", new String(bs, "utf8"));
+			String fileContent=new String(bs,"utf8");
+			String fluentApiBean=DevTools.createFluentApiForBean(fileContent);
 			
-			InputStream sbs = new ByteArrayInputStream("This is byte content".getBytes());
+			InputStream sbs = new ByteArrayInputStream(fluentApiBean.getBytes());
 			file.setContents(sbs, IResource.FORCE, null);
 			
-		} catch (CoreException | IOException e) {
+			
+			
+		} catch (CoreException | IOException | ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
