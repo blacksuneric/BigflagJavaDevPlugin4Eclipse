@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+   <extension
+         point="org.eclipse.ui.commands">
+      <category
+            id="com.bigflag.javadevplugin.commands.category"
+            name="Hello Category">
+      </category>
+      <command
+            categoryId="com.bigflag.javadevplugin.commands.category"
+            id="com.bigflag.javadevplugin.commands.sampleCommand"
+            name="添加Fluent API">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            class="com.bigflag.javadevplugin.handlers.HelloHandler"
+            commandId="com.bigflag.javadevplugin.commands.sampleCommand">
+      </handler>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            locationURI="menu:org.eclipse.ui.main.menu?after=additions">
+         <menu
+               id="com.bigflag.javadevplugin.menus.sampleMenu"
+               label="大旗快速开发工具"
+               mnemonic="M">
+            <command
+                  commandId="com.bigflag.javadevplugin.commands.sampleCommand"
+                  id="com.bigflag.javadevplugin.menus.sampleCommand"
+                  mnemonic="S">
+            </command>
+         </menu>
+      </menuContribution>
+   </extension>
+
+</plugin>
