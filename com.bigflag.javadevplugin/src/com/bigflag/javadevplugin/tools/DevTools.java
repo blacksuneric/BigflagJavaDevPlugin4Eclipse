@@ -7,7 +7,8 @@ public class DevTools {
 
 	public static String createFluentApiForBean(String javaTextContent) throws ClassNotFoundException {
 		// javaTextContent = "asdfasfpackage com.bigflag.devel.framework  ;";
-
+		//test
+		
 		javaTextContent = javaTextContent.replaceAll("\r", "");
 		// javaTextContent=javaTextContent.replaceAll("\n", "");
 		javaTextContent = javaTextContent.replaceAll("\t", "");
