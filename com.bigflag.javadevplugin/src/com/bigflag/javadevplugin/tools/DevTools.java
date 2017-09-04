@@ -13,7 +13,7 @@ public class DevTools {
 //		int packageEndPos = javaTextContent.indexOf(';');
 //		String packagePath = javaTextContent.substring(packageStartPos + "package ".length(), packageEndPos).trim();
 		int classStartPos = javaTextContent.indexOf("class ");
-		int classEndPos = javaTextContent.indexOf("{");
+		int classEndPos = javaTextContent.indexOf(" ", classStartPos + "class ".length());
 		String className = javaTextContent.substring(classStartPos + "class ".length(), classEndPos).trim();
 //		String classPath = packagePath + "." + className;
 		

@@ -47,9 +47,7 @@ public class CreateFluentAPIHandler extends AbstractHandler {
 			in = file.getContents();
 			BufferedInputStream br = new BufferedInputStream(in);
 			byte[] bs = new byte[1024];
-			// ArrayList<Byte> byteArray=new ArrayList<Byte>();
 			br.read(bs);
-//			MessageDialog.openInformation(window.getShell(), "This is a test", new String(bs, "utf8"));
 			String fileContent=new String(bs,"utf8");
 			String fluentApiBean=DevTools.createFluentApiForBean(fileContent);
 			
@@ -57,10 +55,10 @@ public class CreateFluentAPIHandler extends AbstractHandler {
 			file.setContents(sbs, IResource.FORCE, null);
 			
 			
-			
 		} catch (CoreException | IOException | ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			MessageDialog.openInformation(window.getShell(), "Exception Happen", e.getMessage());
 		}
 
 		return null;
