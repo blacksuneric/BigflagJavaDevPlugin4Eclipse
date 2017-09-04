@@ -1,14 +1,14 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Helloworld
+Bundle-Name: JavaDevPlugin
 Bundle-SymbolicName: com.bigflag.javadevplugin;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: com.bigflag.javadevplugin.Activator
-Bundle-Vendor: EXAMPLE
+Bundle-Vendor: Bigflag
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.jface.text,
- org.eclipse.ui.editors,
- org.eclipse.core.resources
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+ org.eclipse.core.resources,
+ org.eclipse.ui.editors
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
