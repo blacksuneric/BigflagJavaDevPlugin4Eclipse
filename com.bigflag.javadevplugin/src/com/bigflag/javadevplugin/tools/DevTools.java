@@ -6,23 +6,17 @@ import java.util.Date;
 public class DevTools {
 
 	public static String createFluentApiForBean(String javaTextContent) throws ClassNotFoundException {
-		// javaTextContent = "asdfasfpackage com.bigflag.devel.framework  ;";
-		//test
-		
 		javaTextContent = javaTextContent.replaceAll("\r", "");
-		// javaTextContent=javaTextContent.replaceAll("\n", "");
 		javaTextContent = javaTextContent.replaceAll("\t", "");
 
-		int packageStartPos = javaTextContent.indexOf("package ");
-		int packageEndPos = javaTextContent.indexOf(';');
-		String packagePath = javaTextContent.substring(packageStartPos + "package ".length(), packageEndPos).trim();
-		System.out.println(packagePath);
+//		int packageStartPos = javaTextContent.indexOf("package ");
+//		int packageEndPos = javaTextContent.indexOf(';');
+//		String packagePath = javaTextContent.substring(packageStartPos + "package ".length(), packageEndPos).trim();
 		int classStartPos = javaTextContent.indexOf("class ");
 		int classEndPos = javaTextContent.indexOf("{");
 		String className = javaTextContent.substring(classStartPos + "class ".length(), classEndPos).trim();
-		String classPath = packagePath + "." + className;
-		// Class clazz = Class.forName(classPath);
-		// return createBeanCode(clazz);
+//		String classPath = packagePath + "." + className;
+		
 		StringBuilder sb = new StringBuilder();
 		StringBuilder fieldSB = new StringBuilder();
 		String[] javaLines = javaTextContent.split("\n");
@@ -49,6 +43,7 @@ public class DevTools {
 		sb.append("\n}");
 		return sb.toString();
 	}
+	
 
 	public static String[] getFiledNameAndType(String line) {
 		if (line.trim().startsWith("private")) {
@@ -130,6 +125,13 @@ public class DevTools {
 		return sb.toString();
 	}
 	
+	/***
+	 * This function is to create the fluent api for beans in terms of getter, setter.
+	 * @param className
+	 * @param fieldName
+	 * @param type
+	 * @return the code generated
+	 */
 	private static String createGetterSetter(String className, String fieldName, String type) {
 		String newFieldName = fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
 		StringBuilder sb = new StringBuilder();
