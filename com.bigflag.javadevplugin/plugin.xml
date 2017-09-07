@@ -13,6 +13,11 @@
             id="com.bigflag.javadevplugin.commands.createFluentAPICommand"
             name="添加Fluent API">
       </command>
+      <command
+            categoryId="com.bigflag.javadevplugin.commands.category"
+            id="com.bigflag.javadevplugin.commands.createSingletonMgrCommand"
+            name="改造为Singleton类">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
@@ -20,18 +25,27 @@
             class="com.bigflag.javadevplugin.handlers.CreateFluentAPIHandler"
             commandId="com.bigflag.javadevplugin.commands.createFluentAPICommand">
       </handler>
+      <handler
+            class="com.bigflag.javadevplugin.handlers.CreateSingletonMgrHandler"
+            commandId="com.bigflag.javadevplugin.commands.createSingletonMgrCommand">
+      </handler>
    </extension>
    <extension
          point="org.eclipse.ui.menus">
       <menuContribution
             locationURI="menu:org.eclipse.ui.main.menu?after=additions">
          <menu
-               id="com.bigflag.javadevplugin.menus.sampleMenu"
+               id="com.bigflag.javadevplugin.menus.devmenu"
                label="大旗快速开发工具"
                mnemonic="M">
             <command
                   commandId="com.bigflag.javadevplugin.commands.createFluentAPICommand"
                   id="com.bigflag.javadevplugin.menus.createFluentAPICommand"
+                  mnemonic="F">
+            </command>
+            <command
+                  commandId="com.bigflag.javadevplugin.commands.createSingletonMgrCommand"
+                  id="com.bigflag.javadevplugin.commands.createSingletonMgrCommand"
                   mnemonic="S">
             </command>
          </menu>

@@ -1,21 +1,52 @@
 package com.bigflag.javadevplugin.tools;
 
-import java.lang.reflect.Field;
-import java.util.Date;
+
 
 public class DevTools {
 
-	public static String createFluentApiForBean(String javaTextContent) throws ClassNotFoundException {
+	public static String createSingletonClass(String javaTextContent)
+	{
+		javaTextContent = javaTextContent.replaceAll("\r", "");
+		javaTextContent = javaTextContent.replaceAll("\t", "");
+		String className=getClassPackageAndClassName(javaTextContent)[1];
+		StringBuilder sbSingleton=new StringBuilder();
+		sbSingleton.append("\npublic class ").append(className).append(" {\n")
+		.append("\tprivate static Object locker = new Object();\n")
+		.append("\tprivate static ").append(className).append(" instance;\n\n")
+		.append("\tprivate ").append(className).append("() {}\n")
+		.append("\tpublic static ").append(className).append(" getInstance() {\n")
+		.append("\t\tif (instance == null) {\n")
+		.append("\t\t\tsynchronized (locker) {\n")
+		.append("\t\t\t\tif (instance == null) {\n")
+		.append("\t\t\t\t\tinstance = new ").append(className).append("();\n")
+		.append("\t\t\t\t}\n")
+		.append("\t\t\t}\n")
+		.append("\t\t}\n")
+		.append("\t\treturn instance;\n")
+		.append("\t}\n");
+		
+		
+		StringBuilder sb = new StringBuilder();
+		String[] javaLines = javaTextContent.split("\n");
+		for (String line : javaLines) {
+			if (line.trim().startsWith("import")) {
+				sb.append(line + "\n");
+			} else if (line.trim().startsWith("package")) {
+				sb.append(line + "\n");
+			} else if (line.trim().equals("")) {
+
+			} 
+		}
+		sb.append(sbSingleton);
+		sb.append("\n}");
+		return sb.toString();
+	}
+	
+	public static String createFluentApiForBean(String javaTextContent) {
 		javaTextContent = javaTextContent.replaceAll("\r", "");
 		javaTextContent = javaTextContent.replaceAll("\t", "");
 
-//		int packageStartPos = javaTextContent.indexOf("package ");
-//		int packageEndPos = javaTextContent.indexOf(';');
-//		String packagePath = javaTextContent.substring(packageStartPos + "package ".length(), packageEndPos).trim();
-		int classStartPos = javaTextContent.indexOf("class ");
-		int classEndPos = javaTextContent.indexOf(" ", classStartPos + "class ".length());
-		String className = javaTextContent.substring(classStartPos + "class ".length(), classEndPos).trim();
-//		String classPath = packagePath + "." + className;
+		String className=getClassPackageAndClassName(javaTextContent)[1];
 		
 		StringBuilder sb = new StringBuilder();
 		StringBuilder fieldSB = new StringBuilder();
@@ -44,6 +75,22 @@ public class DevTools {
 		return sb.toString();
 	}
 	
+	/***
+	 * The function is to get the java code's package and class name
+	 * @param javaTextContent
+	 * @return String[] length is 2. String[0]:packagePath, String[1]:className
+	 */
+	private static String[] getClassPackageAndClassName(String javaTextContent)
+	{
+		int packageStartPos = javaTextContent.indexOf("package ");
+		int packageEndPos = javaTextContent.indexOf(';');
+		String packagePath = javaTextContent.substring(packageStartPos + "package ".length(), packageEndPos).trim();
+		int classStartPos = javaTextContent.indexOf("class ");
+		int classEndPos = javaTextContent.indexOf(" ", classStartPos + "class ".length());
+		String className = javaTextContent.substring(classStartPos + "class ".length(), classEndPos).trim();
+		
+		return new String[]{packagePath,className};
+	}
 
 	public static String[] getFiledNameAndType(String line) {
 		if (line.trim().startsWith("private")) {
@@ -87,43 +134,6 @@ public class DevTools {
 		return filedInfos;
 	}
 
-	public static String createBeanCode(Class clazz) {
-		StringBuilder sb = new StringBuilder();
-		sb.append("public static ").append(clazz.getSimpleName()).append(" newInstance(){\n\treturn new " + clazz.getSimpleName() + "();\n}");
-
-		Field[] fields = clazz.getDeclaredFields();
-		for (Field field : fields) {
-			try {
-				if (field.getName().equalsIgnoreCase("uuid")) {
-					continue;
-				}
-				if (field.getName().equalsIgnoreCase("id")) {
-					continue;
-				}
-
-				String fieldName = field.getName();
-
-				if (field.getGenericType().toString().contains("java.lang.String")) {
-					sb.append(createGetterSetter(clazz.getSimpleName(), fieldName, "String"));
-				} else if (field.getGenericType().toString().equalsIgnoreCase("boolean")) {
-					sb.append(createGetterSetter(clazz.getSimpleName(), fieldName, "boolean"));
-				} else if (field.getGenericType().toString().contains("java.util.Date")) {
-					sb.append(createGetterSetter(clazz.getSimpleName(), fieldName, "Date"));
-				} else if (field.getGenericType().toString().contains("int")) {
-					sb.append(createGetterSetter(clazz.getSimpleName(), fieldName, "int"));
-				} else if (field.getGenericType().toString().contains("long")) {
-					sb.append(createGetterSetter(clazz.getSimpleName(), fieldName, "long"));
-				} else if (field.getGenericType().toString().contains("double")) {
-					sb.append(createGetterSetter(clazz.getSimpleName(), fieldName, "double"));
-				}
-			} catch (IllegalArgumentException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-
-		return sb.toString();
-	}
 	
 	/***
 	 * This function is to create the fluent api for beans in terms of getter, setter.

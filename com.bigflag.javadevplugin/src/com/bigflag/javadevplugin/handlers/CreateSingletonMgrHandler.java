@@ -27,11 +27,11 @@ import com.bigflag.javadevplugin.tools.DevTools;
  * @see org.eclipse.core.commands.IHandler
  * @see org.eclipse.core.commands.AbstractHandler
  */
-public class CreateFluentAPIHandler extends AbstractHandler {
+public class CreateSingletonMgrHandler extends AbstractHandler {
 	/**
 	 * The constructor.
 	 */
-	public CreateFluentAPIHandler() {
+	public CreateSingletonMgrHandler() {
 	}
 
 	/**
@@ -49,18 +49,17 @@ public class CreateFluentAPIHandler extends AbstractHandler {
 			byte[] bs = new byte[1024];
 			br.read(bs);
 			String fileContent=new String(bs,"utf8");
-			String fluentApiBean=DevTools.createFluentApiForBean(fileContent);
+			String fluentApiBean=DevTools.createSingletonClass(fileContent);
 			
 			InputStream sbs = new ByteArrayInputStream(fluentApiBean.getBytes());
 			file.setContents(sbs, IResource.FORCE, null);
 			
 			
-		} catch (CoreException | IOException  e) {
+		} catch (CoreException | IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			MessageDialog.openInformation(window.getShell(), "Exception Happen", e.getMessage());
 		}
-
 		return null;
 	}
 }
