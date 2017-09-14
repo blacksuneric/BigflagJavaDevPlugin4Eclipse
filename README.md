@@ -4,6 +4,12 @@ This is a java dev plugin 4 Eclipse for my team. The aim of this tool is to make
 change logs<br>
 <br>
 2017/09/14<br>
+Add the functionality of change the normal enum to enhanced one with ability like
+<br>isEnabled(int features, Feature feature)
+<br>config(int features, Feature feature, boolean state)
+<br>of(Feature[] features)
+<br>
+2017/09/14<br>
 Add the support for List and Map fluent api generation for POJO
 <br>
 2017/09/07<br>
