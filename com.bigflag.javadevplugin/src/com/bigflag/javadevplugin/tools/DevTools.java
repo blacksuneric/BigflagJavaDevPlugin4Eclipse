@@ -2,6 +2,53 @@ package com.bigflag.javadevplugin.tools;
 
 public class DevTools {
 
+	public static String createEnhancedEnum(String javaTextContent) {
+		javaTextContent = javaTextContent.replaceAll("\r", "");
+		javaTextContent = javaTextContent.replaceAll("\t", "");
+		String className = getClassPackageAndClassName(javaTextContent)[1];
+		StringBuilder sbEnum = new StringBuilder();
+		StringBuilder sbClassHeader = new StringBuilder();
+		sbClassHeader.append("\npublic enum ").append(className).append(" {\n");
+
+		sbEnum.append("\tpublic final int mask;\n")
+				.append("\t").append(className).append("(){\n")
+				.append("\t\tmask = (1 << ordinal());\n")
+				.append("\t}\n\n")
+				.append("\tpublic final int getMask() {\n").append("\t\t return mask;\n").append("\t}\n")
+				.append("\tpublic static boolean isEnabled(int features, ").append(className).append(" feature) {\n")
+				.append("\t\t return (features & feature.mask) != 0;\n").append("\t}\n").append("\tpublic static int config(int features, ")
+				.append(className).append(" feature, boolean state) {\n").append("\t\tif (state) {\n").append("\t\t\tfeatures |= feature.mask;\n")
+				.append("\t\t} else {\n").append("\t\t\tfeatures &= ~feature.mask;").append("\t\t}\n").append("\t\treturn features;\n")
+				.append("\t}\n")
+
+				.append("\tpublic static int of(").append(className).append("[] features) {\n").append("\t\tif (features == null) {\n")
+				.append("\t\t\treturn 0;\n").append("\t\t}\n\n").append("\t\tint value = 0;\n\n").append("\t\tfor (").append(className)
+				.append(" feature: features) {\n").append("\t\t\tvalue |= feature.mask;\n").append("\t\t}\n\n").append("\t\treturn value;\n")
+				.append("\t}\n");
+
+		StringBuilder sb = new StringBuilder();
+		String[] javaLines = javaTextContent.split("\n");
+		for (String line : javaLines) {
+			if (line.trim().startsWith("import")) {
+				sb.append(line + "\n");
+			} else if (line.trim().startsWith("package")) {
+				sb.append(line + "\n");
+			} else if (line.trim().equals("")) {
+
+			}
+		}
+		sb.append(sbClassHeader);
+		for (String line : javaLines) {
+			if (line.trim().endsWith(",")) {
+				sb.append("\t"+line + "\n");
+			}
+		}
+		sb.append("\t;\n");
+		sb.append(sbEnum);
+		sb.append("\n}");
+		return sb.toString();
+	}
+
 	public static String createSingletonClass(String javaTextContent) {
 		javaTextContent = javaTextContent.replaceAll("\r", "");
 		javaTextContent = javaTextContent.replaceAll("\t", "");
@@ -73,9 +120,19 @@ public class DevTools {
 		int packageStartPos = javaTextContent.indexOf("package ");
 		int packageEndPos = javaTextContent.indexOf(';');
 		String packagePath = javaTextContent.substring(packageStartPos + "package ".length(), packageEndPos).trim();
-		int classStartPos = javaTextContent.indexOf("class ");
-		int classEndPos = javaTextContent.indexOf(" ", classStartPos + "class ".length());
-		String className = javaTextContent.substring(classStartPos + "class ".length(), classEndPos).trim();
+
+		String className = "";
+
+		int classStartPos = 0;
+		if (javaTextContent.contains(" class ")) {
+			classStartPos = javaTextContent.indexOf("class ");
+			int classEndPos = javaTextContent.indexOf(" ", classStartPos + "class ".length());
+			className = javaTextContent.substring(classStartPos + "class ".length(), classEndPos).trim();
+		} else if (javaTextContent.contains(" enum ")) {
+			classStartPos = javaTextContent.indexOf("enum ");
+			int classEndPos = javaTextContent.indexOf(" ", classStartPos + "enum ".length());
+			className = javaTextContent.substring(classStartPos + "enum ".length(), classEndPos).trim();
+		}
 
 		return new String[] { packagePath, className };
 	}

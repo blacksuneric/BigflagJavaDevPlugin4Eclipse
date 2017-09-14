@@ -18,6 +18,11 @@
             id="com.bigflag.javadevplugin.commands.createSingletonMgrCommand"
             name="改造为Singleton类">
       </command>
+      <command
+            categoryId="com.bigflag.javadevplugin.commands.category"
+            id="com.bigflag.javadevplugin.commands.createEnhancedEnumCommand"
+            name="改造为增强型枚举">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
@@ -28,6 +33,10 @@
       <handler
             class="com.bigflag.javadevplugin.handlers.CreateSingletonMgrHandler"
             commandId="com.bigflag.javadevplugin.commands.createSingletonMgrCommand">
+      </handler>
+      <handler
+            class="com.bigflag.javadevplugin.handlers.CreateEnhancedEnumHandler"
+            commandId="com.bigflag.javadevplugin.commands.createEnhancedEnumCommand">
       </handler>
    </extension>
    <extension
@@ -47,6 +56,11 @@
                   commandId="com.bigflag.javadevplugin.commands.createSingletonMgrCommand"
                   id="com.bigflag.javadevplugin.commands.createSingletonMgrCommand"
                   mnemonic="S">
+            </command>
+            <command
+                  commandId="com.bigflag.javadevplugin.commands.createEnhancedEnumCommand"
+                  id="com.bigflag.javadevplugin.commands.createEnhancedEnumCommand"
+                  mnemonic="A">
             </command>
          </menu>
       </menuContribution>
