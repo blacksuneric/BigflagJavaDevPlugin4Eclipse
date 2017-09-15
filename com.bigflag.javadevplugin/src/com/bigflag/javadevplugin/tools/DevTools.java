@@ -213,12 +213,12 @@ public class DevTools {
 			String genericType = type.substring("List<".length(), type.lastIndexOf(">"));
 			String genericTypeParameterName = genericType.substring(0, 1).toLowerCase() + genericType.substring(1);
 			sb.append("\n\n\tpublic ").append(className).append(" add").append(newFieldName).append("(").append(genericType).append(" ")
-					.append(genericTypeParameterName).append("){\n\t\t").append("this." + fieldName).append(".add(").append(genericTypeParameterName)
+					.append(genericTypeParameterName).append("){\n\t\t").append("if(this.").append(fieldName).append("==null){\n\t\t\tthis.").append(fieldName).append("=new Array").append(type).append("();\n\t\t}\n\t\tthis." + fieldName).append(".add(").append(genericTypeParameterName)
 					.append(");\n").append("\t\treturn this;\n\t}");
 			sb.append("\n\n\tpublic ").append(className).append(" remove").append(newFieldName).append("(").append(genericType).append(" ")
-					.append(genericTypeParameterName).append("){\n\t\t").append("this." + fieldName).append(".remove(")
+					.append(genericTypeParameterName).append("){\n\t\t").append("if(this.").append(fieldName).append("==null){\n\t\t\tthis.").append(fieldName).append("=new Array").append(type).append("();\n\t\t}\n\t\tthis." + fieldName).append(".remove(")
 					.append(genericTypeParameterName).append(");\n").append("\t\treturn this;\n\t}");
-			sb.append("\n\n\tpublic ").append(className).append(" clear").append(newFieldName).append("(){\n\t\t").append("this." + fieldName)
+			sb.append("\n\n\tpublic ").append(className).append(" clear").append(newFieldName).append("(){\n\t\t").append("if(this.").append(fieldName).append("==null){\n\t\t\tthis.").append(fieldName).append("=new Array").append(type).append("();\n\t\t}\n\t\tthis." + fieldName)
 					.append(".clear(").append("").append(");\n").append("\t\treturn this;\n\t}");
 
 		} else if (type.startsWith("Map<")) {
@@ -229,14 +229,14 @@ public class DevTools {
 			String genericValueTypeParameterName = genericValueType.substring(0, 1).toLowerCase() + genericValueType.substring(1);
 			sb.append("\n\n\tpublic ").append(className).append(" put").append(newFieldName).append("(").append(genericKeyType).append(" ")
 					.append(genericKeyTypeParameterName).append(",").append(genericValueType).append(" ").append(genericValueTypeParameterName)
-					.append("){\n\t\t").append("this." + fieldName).append(".put(").append(genericKeyTypeParameterName).append(",")
+					.append("){\n\t\t").append("if(this.").append(fieldName).append("==null){\n\t\t\tthis.").append(fieldName).append("=new Hash").append(type).append("();\n\t\t}\n\t\tthis." + fieldName).append(".put(").append(genericKeyTypeParameterName).append(",")
 					.append(genericValueTypeParameterName).append(");\n").append("\t\treturn this;\n\t}");
 
 			sb.append("\n\n\tpublic ").append(className).append(" remove").append(newFieldName).append("(").append(genericKeyType).append(" ")
-					.append(genericKeyTypeParameterName).append("){\n\t\t").append("this." + fieldName).append(".remove(")
+					.append(genericKeyTypeParameterName).append("){\n\t\t").append("if(this.").append(fieldName).append("==null){\n\t\t\tthis.").append(fieldName).append("=new Hash").append(type).append("();\n\t\t}\n\t\tthis." + fieldName).append(".remove(")
 					.append(genericKeyTypeParameterName).append(");\n").append("\t\treturn this;\n\t}");
 
-			sb.append("\n\n\tpublic ").append(className).append(" clear").append(newFieldName).append("(){\n\t\t").append("this." + fieldName)
+			sb.append("\n\n\tpublic ").append(className).append(" clear").append(newFieldName).append("(){\n\t\t").append("if(this.").append(fieldName).append("==null){\n\t\t\tthis.").append(fieldName).append("=new Hash").append(type).append("();\n\t\t}\n\t\tthis." + fieldName)
 					.append(".clear(").append("").append(");\n").append("\t\treturn this;\n\t}");
 
 		}
