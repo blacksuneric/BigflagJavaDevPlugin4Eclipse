@@ -3,6 +3,9 @@ This is a java dev plugin 4 Eclipse for my team. The aim of this tool is to make
 
 change logs<br>
 <br>
+2017/09/15<br>
+Add the lazy-init feature to pojo fluent-api generation function for complex type such List, Map
+<br>
 2017/09/14<br>
 Add the functionality to change the normal enum to enhanced one with ability like
 <br>isEnabled(int features, Feature feature)
