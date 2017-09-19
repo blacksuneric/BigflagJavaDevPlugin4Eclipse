@@ -23,6 +23,11 @@
             id="com.bigflag.javadevplugin.commands.createEnhancedEnumCommand"
             name="改造为增强型枚举">
       </command>
+            <command
+            categoryId="com.bigflag.javadevplugin.commands.category"
+            id="com.bigflag.javadevplugin.commands.createImmutableClassBuilderCommand"
+            name="为immutable类添加Builder">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
@@ -37,6 +42,10 @@
       <handler
             class="com.bigflag.javadevplugin.handlers.CreateEnhancedEnumHandler"
             commandId="com.bigflag.javadevplugin.commands.createEnhancedEnumCommand">
+      </handler>
+      <handler
+            class="com.bigflag.javadevplugin.handlers.CreateImmutableClassBuilderCommand"
+            commandId="com.bigflag.javadevplugin.commands.createImmutableClassBuilderCommand">
       </handler>
    </extension>
    <extension
@@ -61,6 +70,11 @@
                   commandId="com.bigflag.javadevplugin.commands.createEnhancedEnumCommand"
                   id="com.bigflag.javadevplugin.commands.createEnhancedEnumCommand"
                   mnemonic="A">
+            </command>
+            <command
+                  commandId="com.bigflag.javadevplugin.commands.createImmutableClassBuilderCommand"
+                  id="com.bigflag.javadevplugin.commands.createImmutableClassBuilderCommand"
+                  mnemonic="B">
             </command>
          </menu>
       </menuContribution>
