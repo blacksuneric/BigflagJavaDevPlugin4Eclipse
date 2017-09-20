@@ -3,6 +3,9 @@ This is a java dev plugin 4 Eclipse for my team. The aim of this tool is to make
 
 change logs<br>
 <br>
+2017/09/20<br>
+Add the Builder code generation for immutable class. The code comes messy now, find time to tidy it up.
+<br>
 2017/09/15<br>
 Add the lazy-init feature to pojo fluent-api generation function for complex type such List, Map
 <br>
