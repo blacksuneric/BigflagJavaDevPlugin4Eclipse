@@ -1,5 +1,6 @@
 package com.bigflag.javadevplugin.tools;
 
+
 public class DevTools {
 
 	public static String createEnhancedEnum(String javaTextContent) {
@@ -76,6 +77,81 @@ public class DevTools {
 		sb.append("\n}");
 		return sb.toString();
 	}
+	
+	public static String createImmutableClassBuilder(String javaTextContent) {
+		javaTextContent = javaTextContent.replaceAll("\r", "");
+		javaTextContent = javaTextContent.replaceAll("\t", "");
+		String[] javaLines = javaTextContent.split("\n");
+		String className = getClassPackageAndClassName(javaTextContent)[1];
+		StringBuilder sbBuilder = new StringBuilder();
+		StringBuilder sbGetter=new StringBuilder();
+		sbBuilder
+				.append("\tprivate ").append(className).append("(Builder builder) {\n")
+				.append("\t\tsuper();\n");
+		//start to create the class constructor with final attributes
+		for(String line:javaLines)
+		{
+			line=line.trim();
+			if(line.startsWith("private final"))
+			{
+				line=line.replace("final", "");
+				String[] filedInfos = getFiledNameAndType(line.trim());
+				String fieldName=filedInfos[1];
+				String typeName=filedInfos[0];
+				sbBuilder.append("\t\tthis.").append(fieldName).append(" = builder.").append(fieldName).append(";\n");
+				sbGetter.append(createGetter(className, fieldName, typeName));
+			}
+		}
+		sbBuilder.append("\t}\n\n");
+		//start to create the builder
+		StringBuilder sbBuilderSetter=new StringBuilder();
+		sbBuilder
+			.append("\tpublic static class Builder{\n");
+		for(String line:javaLines)
+		{
+			line=line.trim();
+			if(line.startsWith("private final"))
+			{
+				line=line.replace("final", "");
+				String[] filedInfos = getFiledNameAndType(line.trim());
+				String fieldName=filedInfos[1];
+				String typeName=filedInfos[0];
+				sbBuilder.append("\t\tprivate ").append(typeName).append(" ").append(fieldName).append(";\n");
+				sbBuilderSetter.append(createFluentSetter("\t","Builder", fieldName, typeName));
+			}
+		}
+		sbBuilder.append(sbBuilderSetter);
+		sbBuilder.append("\n\n");
+		sbBuilder
+			.append("\t\tpublic ").append(className).append(" build(){\n")
+			.append("\t\t\treturn new ").append(className).append("(this);\n")
+			.append("\t\t}\n");
+		sbBuilder.append("\t}\n");
+		
+				
+
+		StringBuilder sb = new StringBuilder();
+		
+		for (String line : javaLines) {
+			if (line.trim().startsWith("import")
+					||line.trim().startsWith("package")
+					||line.trim().startsWith("/")
+					||line.trim().startsWith("*")
+					||line.trim().startsWith("public final class")) {
+				sb.append(line + "\n");
+			}else if(line.trim().startsWith("private final ")){
+				sb.append("\t"+line + "\n");
+			}
+			else if (line.trim().equals("")) {
+
+			}
+		}
+		sb.append(sbGetter);
+		sb.append("\n\n");
+		sb.append(sbBuilder);
+		sb.append("\n}");
+		return sb.toString();
+	}
 
 	public static String createFluentApiForBean(String javaTextContent) {
 		javaTextContent = javaTextContent.replaceAll("\r", "");
@@ -107,6 +183,37 @@ public class DevTools {
 		sb.append("\n\tpublic static ").append(className).append(" newInstance(){\n\t\treturn new " + className + "();\n\t}");
 		sb.append(fieldSB);
 		sb.append("\n}");
+		return sb.toString();
+	}
+	
+	private static String createGetter(String className, String fieldName, String type)
+	{
+		String newFieldName = fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
+		StringBuilder sb=new StringBuilder();
+		sb.append("\n\n\tpublic ").append(type).append(" get").append(newFieldName).append("(){\n\t\t").append("return this." + fieldName)
+		.append(";\n\t}");
+		return sb.toString();
+	}
+	
+	private static String createSetter(String className, String fieldName, String type)
+	{
+		String newFieldName = fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
+		StringBuilder sb=new StringBuilder();
+		sb.append("\n\n\tpublic void set").append(newFieldName).append("(").append(type).append(" ").append(fieldName).append("){\n\t\t")
+		.append("this." + fieldName).append("=").append(fieldName).append(";\n\t}");
+		return sb.toString();
+	}
+	
+	private static String createFluentSetter(String lineHead,String className, String fieldName, String type)
+	{
+		String newFieldName = fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
+		StringBuilder sb=new StringBuilder();
+		sb
+			.append(lineHead).append("\n\n")
+			.append(lineHead).append("\tpublic ").append(className).append(" ").append(fieldName).append("(").append(type).append(" ").append(fieldName).append("){\n")
+			.append(lineHead).append("\t\t").append("this." + fieldName).append("=").append(fieldName).append(";\n")
+			.append(lineHead).append("\t\treturn this;\n")
+			.append(lineHead).append("\t}");
 		return sb.toString();
 	}
 

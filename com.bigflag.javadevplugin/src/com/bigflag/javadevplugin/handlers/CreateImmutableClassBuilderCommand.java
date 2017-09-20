@@ -51,11 +51,10 @@ public class CreateImmutableClassBuilderCommand extends AbstractHandler {
 			byte[] bs = new byte[1024];
 			br.read(bs);
 			String fileContent = new String(bs, "utf8");
-			String fluentApiBean = DevTools.createFluentApiForBean(fileContent);
+			String fluentApiBean = DevTools.createImmutableClassBuilder(fileContent);
 
 			sbs = new ByteArrayInputStream(fluentApiBean.getBytes());
 			file.setContents(sbs, IResource.FORCE, null);
-			MessageDialog.openInformation(window.getShell(), "Exception Happen","添加immutable");
 		} catch (CoreException | IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
